@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+body{
+background-color:black;
+}
+#arena{
+float:left;
+width:1000px;
+height:600px;
+border:5px solid white;
+}
+#player, #computer{
+width:20px;
+height:100px;
+position:absolute;
+}
+#controls{
+width:300px;
+float:left;
+border:3px solid white;
+margin:5px;
+}
+#player{
+background-color:blue;
+left:100px;
+}
+#computer{
+background-color:red;
+left:900px;
+}
+#score{
+color:grey;
+text-align:center;
+margin-left:auto;
+margin-right:auto;
+}
+#instructions{
+padding:10px;
+font-family:sans-serif;
+color:white;
+visibility:hidden;
+}
+label{
+color:white;
+}
+#right{
+float:left;
+padding: 10px;
+}
+h2{
+text-align:center;
+color:white;
+font-family:sans-serif;
+}
+#ball {
+background-color:white;
+position:absolute;
+width: 50px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px; 
+}
+</style>
+<title>Pong</title>
+</head>
+<body >
+<div id="arena">
+<div id="score">
+</div>
+<div id="player">
+</div>
+<div id="ball" style="left:500px; top: 250px">
+</div>
+<div id="computer" style="top:250px;">
+</div>
+</div>
+<div id="right">
+<h2>Pong - The Game</h2>
+<div id="controls">
+<input id="strt" type="button" value="Start/Resume Game" onclick="startGame();" />
+<input id="pause" type="button" value="Pause Game" onclick="pauseGame();" />
+<div id="inst">
+<form id="options">
+  <label><input type="radio" name="select" onclick="solid();" checked/>
+  Solid Sides<br /></label>
+  <label><input type="radio" name="select" onclick="solid();"/>
+  Wrapping Sides
+   </label>
+   </form>
+   <form id="sp">
+   <label>Speed </label>
+   <table>
+	<tr>
+    <td><select id="speed" name="speed" size="1">
+			<option selected="selected" value="2" >slow</option>
+			<option value="5" >medium</option>
+			<option value="8" >fast</option>
+		</select></td><td></td></tr>
+		</table>
+	</form>
+	<form id="dif">
+	<label>Difficulty </label>
+   <table>
+	<tr>
+    <td><select id="difficulty" name="difficulty" size="1">
+			<option selected="selected" value="50" >easy</option>
+			<option value="30" >medium</option>
+			<option value="10" >hard</option>
+			<option value="5" >god</option>
+		</select></td><td></td></tr>
+		</table>
+	</form>
+<input id="instruct" type="button" value="Instructions" onclick="instruct();" />
+<div id="instructions">
+<!--Instruction Retrieved from Wikipedia-->
+Pong is a two-dimensional sports game that simulates table tennis. The player controls an in-game paddle by moving it vertically across the left side of the screen, and can compete against either a computer controlled opponent or another player controlling a second paddle on the opposing side. Players use the paddles to hit a ball back and forth. The aim is for a player to earn more points than the opponent; points are earned when one fails to return the ball to the other.
+</div>
+</div>
+</div>
+</div>
+<script src="pong.js" type="text/javascript"></script>
+
+<script>
+var degree=0;
+var speed=2;
+var npcDif=20;
+var npcCount=0;
+var sol=true;;
+var counter=0;
+var player1S=0;
+var player2S=0;
+var game;
+var xpos = parseInt(ball.style.left,10);
+var ypos = parseInt(ball.style.top,10);
+var recentlyChanged=false;
+document.onmousemove = handleMouseMove;
+document.getElementById("sp").onchange=changeSpeed;
+document.getElementById("dif").onchange=changeDiff;
+updateScore();
+solid();
+function start(){
+if(sol){
+moveBallS();
+}
+else{
+moveBallP()
+}
+if(npcCount>=npcDif){
+npc();
+npcCount=0;
+}
+else{
+npcCount++;
+}
+}
+function changeDiff(){
+npcDif=document.getElementById("difficulty").value;
+}
+function moveBallP() {
+    var ball = document.getElementById("ball");
+	if(ypos <30 && !recentlyChanged){
+	ypos=550;
+	}
+	if(ypos>550 && !recentlyChanged){
+	ypos=30;
+	}
+	if (xpos > 950){
+	winner(1);
+	return false;
+	}
+	if (xpos<50){
+	winner(2);
+	return false;
+	}
+	if (xpos<855 && xpos > 845 && matchRight()){
+	degree=degRight();
+	}
+	if (xpos>100 && xpos <110 && matchLeft()){
+	degree=degLeft();
+	}
+	if(recentlyChanged){
+	if(counter>=10){
+	recentlyChanged=false;
+	counter=0;
+	}
+	else{ 
+	counter++;}
+	}
+	xpos = xpos + speed*Math.cos(degree);
+	ypos = ypos + speed*Math.sin(degree);
+	ball.style.left = xpos + "px";
+	ball.style.top = ypos + "px";
+}
+function moveBallS() {
+    var ball = document.getElementById("ball");
+	if(ypos <30 && !recentlyChanged){
+	degree=0-degree;
+	}
+	if(ypos>550 && !recentlyChanged){
+	degree=0-degree;
+	}
+	if (xpos > 950){
+	winner(1);
+	return false;
+	}
+	if (xpos<50){
+	winner(2);
+	return false;
+	}
+	if (xpos<855 && xpos > 845 && matchRight()){
+	degree=degRight();
+	}
+	if (xpos>100 && xpos <110 && matchLeft()){
+	degree=degLeft();
+	}
+	if(recentlyChanged){
+	if(counter>=10){
+	recentlyChanged=false;
+	counter=0;
+	}
+	else{ 
+	counter++;}
+	}
+	xpos = xpos + speed*Math.cos(degree);
+	ypos = ypos + speed*Math.sin(degree);
+	ball.style.left = xpos + "px";
+	ball.style.top = ypos + "px";
+}
+function matchLeft(){
+return Math.abs(parseInt(document.getElementById("player").style.top,10)+50-(parseInt(document.getElementById("ball").style.top,10)+25))<75;
+}
+function matchRight(){
+return Math.abs(parseInt(document.getElementById("computer").style.top,10)+50-(parseInt(document.getElementById("ball").style.top,10)+25))<75;
+}
+function degLeft(){
+console.log(0-((parseInt(document.getElementById("player").style.top,10)+50-(parseInt(document.getElementById("ball").style.top,10)+25))/75*(Math.PI/2.5)));
+return (0-((parseInt(document.getElementById("player").style.top,10)+50-(parseInt(document.getElementById("ball").style.top,10)+25))/75*(Math.PI/2.5)));
+}
+function degRight(){
+return Math.PI+((parseInt(document.getElementById("computer").style.top,10)+50-(parseInt(document.getElementById("ball").style.top,10)+25))/75*(Math.PI/2.5));
+}
+function handleMouseMove(evt) {
+	evt = (evt) ? evt : ((event) ? event : null);
+	
+		var obj = document.getElementById("player");
+		if(30<evt.clientY-50 && evt.clientY-50<505){
+		obj.style.top = evt.clientY-50 + "px";
+		}
+		else if(30<evt.clientY-50){
+		obj.style.top = 505+"px";
+		}
+		else if(evt.clientY-50<505){
+		obj.style.top = 30+"px";
+		}
+		return false;
+}
+function winner(player){
+if(player==1){
+player1S+=1;
+updateScore();
+}
+if(player==2){
+player2S+=1;
+updateScore();
+}
+xpos=500;
+ypos=250;
+document.getElementById("ball").style.left="500px";
+document.getElementById("ball").style.left="250px";
+degree=0;
+}
+function startGame(){
+clearInterval(game);
+game=setInterval(start,5);
+}
+function pauseGame(){
+clearInterval(game);
+}
+function npc(){ 
+var ball = document.getElementById("ball");
+var current=document.getElementById("computer");
+var cpos=parseInt(current.style.top,10);
+var npos=(cpos+ypos-25)/2;
+if(npos>30 && npos<500){
+document.getElementById("computer").style.top=npos+"px";
+}
+}
+function changeSpeed(){
+speed=document.getElementById("speed").value;
+}
+function solid(){
+sol=document.getElementById("options").select[0].checked;
+}
+function instruct(){
+if(document.getElementById("instructions").style.visibility=="visible"){
+document.getElementById("instructions").style.visibility="hidden";
+}
+else{
+document.getElementById("instructions").style.visibility="visible";
+}
+}
+function updateScore(){
+document.getElementById("score").innerHTML="<h1>"+player1S+" : "+player2S+"</h1>";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+html{
+height: 100%;
+}
+
+body{
+height: 100%;
+font-family: 'Play';
+background-color: #e3e3e3;
+margin: 0px;
+padding: 0px;
+}
+
+p{
+margin: 0px;
+}
+
+h1{
+color: #000000;
+font-size: 2em;
+width: 600px;
+height: 64px;
+background-image: url('http://www.fremontrobotics.com/heading.png');
+text-align: left;
+}
+
+h3{
+color: #000000;
+font-size: 2.5ex;
+width: 400px;
+height: 64px;
+background-image: url('http://www.fremontrobotics.com/heading.png');
+text-align: left;
+}
+
+h4{
+color: #000000;
+font-size: large;
+font-weight: bold;
+width: 241px;
+height: 29px;
+text-align: center;
+background-image: url('http://www.fremontrobotics.com/sponsorbg.png');
+}
+
+a:link{
+color: #C00000;
+text-decoration: none;
+}
+
+a:hover{
+text-decoration: underline;
+}
+
+a:visited{
+color: #A00000;
+text-decoration: none;
+}
+
+#all{
+color: #000000;
+margin-left: auto;
+margin-right: auto;
+width: 1000px;
+text-align: center;
+font-size: 1em;
+height: 100%;
+padding-top: 20px;
+}
+
+#contents{
+background-color: #FFF;
+margin: 0px;
+margin-top: -1%;
+min-height: 610px;
+text-align: left;
+padding: 50px;
+}
+
+#logo{
+float: left;
+}
+
+#navbar{
+margin-right: 0px;
+margin-left: auto;
+width: 890px;
+height: 143px;
+background-image: url('http://fremontrobotics.com/navbar.png');
+}
+
+#navbartext{
+color: #191919;
+font-weight: bold;
+font-family: 'Quantico', Arial;
+font-size: 2.3ex;
+vertical-align: -55px;
+}
+
+#navbartext>a:link{
+color: #191919;
+}
+
+#navbartext>a:hover{
+text-decoration: none;
+background-color: #FF0000;
+}
+
+#navbartext>a:visited{
+color: #191919;
+}
+
+#title{
+font-size: 2em;
+}
+
+#copyright{
+font-size: 1.5ex;
+width: inherit;
+margin: 0px; 
+background-color: #FFF;
+text-align: center;
+}
+
+.title_text{
+text-align: center;
+vertical-align: -22px;
+}

@@ -1,0 +1,36 @@
+#rightColumn{
+margin:10px;
+background-color:white;
+width:27%;
+float:right;
+border:1px solid black;
+}
+#leftColumn{
+width:70%;
+float:left;
+}
+.leftItem{
+margin:10px;
+padding:10px;
+text-align:left;
+background-color:white;
+border:1px solid black;
+}
+#contents{
+}
+#slidesh{
+height:300px;
+}
+#container{
+text-align:center;
+font-weight:bold;
+}
+.className{
+background-color:red;
+}
+div{
+}
+#outside{
+width:1000px;
+height:400px;
+}
